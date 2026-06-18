@@ -1,0 +1,110 @@
+// ==============================================
+// Consulta: dim_salesitems
+// Origem: arquivo CSV dataset_fashion_store_sales_items.csv (Kaggle)
+// Objetivo: montar a tabela fato de itens de venda, com quantidade e valor total por item
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_salesitems.csv"),[Delimiter=",", Columns=13, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos", {{"original_price", type number}, {"unit_price", type number}, {"item_total", type number}}, "en-US"),
+    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Tipo Alterado",{{"sale_date", type date}, {"quantity", Int64.Type}, {"product_id", Int64.Type}, {"sale_id", Int64.Type}, {"item_id", Int64.Type}})
+in
+    #"Tipo Alterado1"
+
+// ==============================================
+// Consulta: fat_sales
+// Origem: arquivo CSV dataset_fashion_store_sales.csv (Kaggle)
+// Objetivo: representar o nível de pedido/venda, ligando clientes, canais, campanhas e datas
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_sales.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado com Localidade" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos", {{"total_amount", type number}}, "en-US"),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Tipo Alterado com Localidade",{{"sale_id", Int64.Type}, {"discounted", Int64.Type}, {"sale_date", type date}, {"customer_id", Int64.Type}})
+in
+    #"Tipo Alterado"
+
+// ==============================================
+// Consulta: dim_customers
+// Origem: arquivo CSV dataset_fashion_store_customers.csv (Kaggle)
+// Objetivo: criar dimensão de clientes, com atributos cadastrais para segmentação e análise de comportamento
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_customers.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"customer_id", Int64.Type}, {"country", type text}, {"age_range", type text}, {"signup_date", type date}})
+in
+    #"Tipo Alterado"
+
+// ==============================================
+// Consulta: dim_products
+// Origem: arquivo CSV dataset_fashion_store_products.csv (Kaggle)
+// Objetivo: criar dimensão de produtos, incluindo categoria, gênero, cor e tamanho para análises de mix
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_products.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado com Localidade" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos", {{"catalog_price", type number}, {"cost_price", type number}}, "en-US"),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Tipo Alterado com Localidade",{{"product_id", Int64.Type}})
+in
+    #"Tipo Alterado"
+
+// ==============================================
+// Consulta: dim_channels
+// Origem: arquivo CSV dataset_fashion_store_channels.csv (Kaggle)
+// Objetivo: criar dimensão de canais de venda (por exemplo, loja física e e‑commerce) para análise de desempenho por canal
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_channels.csv"),[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Column1", type text}, {"Column2", type text}}),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Tipo Alterado", [PromoteAllScalars=true]),
+    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"channel", type text}, {"description", type text}})
+in
+    #"Tipo Alterado1"
+
+// ==============================================
+// Consulta: dim_campaigns
+// Origem: arquivo CSV dataset_fashion_store_campaigns.csv (Kaggle)
+// Objetivo: criar dimensão de campanhas, com nome e período de vigência, para análise do impacto das ações de marketing
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_campaigns.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"campaign_id", Int64.Type}, {"campaign_name", type text}, {"start_date", type date}, {"end_date", type date}, {"channel", type text}, {"discount_type", type text}, {"discount_value", type number}})
+in
+    #"Tipo Alterado"
+
+// ==============================================
+// Consulta: dim_stock
+// Origem: arquivo CSV dataset_fashion_store_stock.csv (Kaggle)
+// Objetivo: representar informações de estoque por produto, apoiando análises de disponibilidade e giro (quando necessário)
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\archive\dataset_fashion_store_stock.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"country", type text}, {"product_id", Int64.Type}, {"stock_quantity", Int64.Type}})
+in
+    #"Tipo Alterado"
+
+// ==============================================
+// Consulta: forecast_sales
+// Origem: arquivo CSV forecast_sales.csv (gerado no notebook do Google Colab)
+// Objetivo: importar a série diária combinando vendas históricas e valores previstos,
+//           para uso nos gráficos de Analytics e nas medidas de forecast em Power BI
+// ==============================================
+
+let
+    Fonte = Csv.Document(File.Contents("C:\Users\deivid\Downloads\forecast_sales.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Alterar Tipo" = Table.TransformColumnTypes(Fonte,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Alterar Tipo", [PromoteAllScalars=true]),
+    #"Tipo Alterado com Localidade" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos", {{"forecast_sales", type number}, {"total_sales", type number}}, "en-US"),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Tipo Alterado com Localidade",{{"sale_date", type date}})
+in
+    #"Tipo Alterado"
