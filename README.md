@@ -1,8 +1,8 @@
 # Projeto em Business Intelligence e Analytics – European Fashion Store
 
 Este repositório contém o código, dados e modelos utilizados no projeto de BI e Analytics
-desenvolvido a partir do dataset público **Multitable Ecommerce European Fashion** (Kaggle),
-focado na análise de desempenho de vendas de uma loja de moda europeia.[link do Kaggle]
+desenvolvido a partir do dataset público [**Multitable Ecommerce European Fashion**](https://www.kaggle.com/datasets/joycemara/european-fashion-store-multitable-dataset),
+focado na análise de desempenho de vendas de uma loja de moda europeia.
 
 ## 1. Estrutura do repositório
 
