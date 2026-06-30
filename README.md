@@ -51,6 +51,10 @@ Arquivo do relatório:
 
 - `powerbi/Dashboard_sales.pbix`
 
+Acesso online:
+
+- [**Dashboard sales**](https://app.powerbi.com/view?r=eyJrIjoiZjJjNmVmNjAtODEwZi00NzAzLWE1YWYtODUxZmZhODk5YTU4IiwidCI6IjY1OWNlMmI4LTA3MTQtNDE5OC04YzM4LWRjOWI2MGFhYmI1NyJ9)
+
 ## 4. Análise preditiva
 
 A análise preditiva utiliza um modelo de regressão linear simples aplicado sobre a série diária de faturamento:
