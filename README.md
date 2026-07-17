@@ -8,7 +8,7 @@ focado na análise de desempenho de vendas de uma loja de moda europeia.
 
 - `data/raw/`: arquivos CSV originais do Kaggle (clientes, vendas, itens de venda, produtos, estoque, campanhas e canais).
 - `data/processed/forecast_sales.csv`: série histórica e valores previstos gerados no notebook de Analytics.
-- `notebooks/Forecast_sales.ipynb`: notebook em Python/Colab com o código de agregação diária e modelo de regressão linear para previsão de vendas.
+- `notebook/Forecast_sales.ipynb`: notebook em Python/Colab com o código de agregação diária e modelo de regressão linear para previsão de vendas.
 - `powerbi/Dashboard_sales.pbix`: arquivo com o modelo dimensional, medidas DAX e dashboards em Power BI.
 - `powerquery/queries_m_transforms.pq`: código M das consultas de importação, limpeza e transformação dos dados em Power Query.
 
@@ -59,7 +59,7 @@ Acesso online:
 
 A análise preditiva utiliza um modelo de regressão linear simples aplicado sobre a série diária de faturamento:
 
-- O notebook `notebooks/Forecast_sales.ipynb` prepara a série temporal, treina o modelo e gera previsões.  
+- O notebook `notebook/Forecast_sales.ipynb` prepara a série temporal, treina o modelo e gera previsões.  
 - As previsões são exportadas para `data/processed/forecast_sales.csv`.  
 - Esse arquivo é reimportado no Power BI e relacionado à dimensão de datas.
 
